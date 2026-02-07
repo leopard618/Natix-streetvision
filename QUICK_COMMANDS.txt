@@ -1,0 +1,93 @@
+═══════════════════════════════════════════════════════════════════
+NATIX MINING - QUICK REFERENCE COMMANDS
+═══════════════════════════════════════════════════════════════════
+
+🚀 START TRAINING (AUTOMATIC - RECOMMENDED)
+───────────────────────────────────────────────────────────────────
+cd ~/Romeo/streetvision-subnet/natix_training
+source ~/natix-mining-project/venv/bin/activate
+./run_all.sh
+
+
+📋 MANUAL STEP-BY-STEP
+───────────────────────────────────────────────────────────────────
+# Activate environment
+source ~/natix-mining-project/venv/bin/activate
+cd ~/Romeo/streetvision-subnet/natix_training
+
+# Download datasets (2-4 hours)
+python download_datasets.py
+
+# Prepare data (1-2 hours)
+python prepare_data.py
+
+# Train model (20-25 hours)
+python train_dinov2.py
+
+# Test model
+python inference.py path/to/image.jpg
+
+# Upload to HuggingFace
+python upload_to_hf.py
+
+
+📊 MONITORING
+───────────────────────────────────────────────────────────────────
+# GPU usage
+watch -n 1 nvidia-smi
+
+# Disk space
+watch -n 60 df -h
+
+# Training logs
+tail -f ~/natix-mining-project/models/logs/train.log
+
+
+🔧 TROUBLESHOOTING
+───────────────────────────────────────────────────────────────────
+# Out of memory? Reduce batch size in train_dinov2.py:
+per_device_train_batch_size=12  # Line ~120
+
+# Disk full? Delete old checkpoints:
+rm -rf ~/natix-mining-project/models/dinov2_roadwork/checkpoint-*
+
+# Dataset download fails? Login to HuggingFace:
+huggingface-cli login
+
+
+📁 FILE LOCATIONS
+───────────────────────────────────────────────────────────────────
+Scripts:     ~/Romeo/streetvision-subnet/natix_training/
+Environment: ~/natix-mining-project/venv/
+Data:        ~/natix-mining-project/data/
+Models:      ~/natix-mining-project/models/
+Logs:        ~/natix-mining-project/models/logs/
+
+
+⏱️ EXPECTED TIMELINE
+───────────────────────────────────────────────────────────────────
+Download datasets:  2-4 hours
+Prepare data:       1-2 hours
+Train model:        20-25 hours (RTX 3090)
+Total:              ~25-33 hours
+
+
+🎯 EXPECTED RESULTS
+───────────────────────────────────────────────────────────────────
+Accuracy:    93-96%
+F1 Score:    0.90-0.95
+Model size:  ~1.2 GB
+Inference:   50-100ms per image
+
+
+✅ SYSTEM STATUS
+───────────────────────────────────────────────────────────────────
+GPU:         NVIDIA RTX 3090 (24GB VRAM) ✓
+Environment: All packages installed ✓
+Scripts:     Ready to use ✓
+Disk space:  45 GB available (tight, monitor!)
+
+
+═══════════════════════════════════════════════════════════════════
+Ready to start! Run the commands above.
+═══════════════════════════════════════════════════════════════════
